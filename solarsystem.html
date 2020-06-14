@@ -52,7 +52,7 @@ var clock = new THREE.Clock();
 
 // custom global variables
 var mirrorCube
-var planetMercury, planetVenus, planetEarth,planetMoon, planetMars,planetSaturn, planetUranus, planetNeptune,planetSun
+var planetMercury, planetVenus, planetEarth,planetMoon, planetMars, planetJupiter,planetSaturn, planetUranus, planetNeptune,planetSun
 var mirrorSphere
 var box
 var orbitingSpheres =[]
@@ -173,9 +173,11 @@ function init()
 
 
 	planetMars = generatePlanet("2k_mars.jpg","null",-1350,0,-1350,53)
-	planetSaturn = generatePlanet("2k_saturn.jpg",null,1800,0,1800,330)
-	planetUranus = generatePlanet("2k_uranus.jpg",null,-2200,0,-2200,200)
-	planetNeptune = generatePlanet("2k_neptune.jpg",null,2470,0,2470,176)
+	planetJupiter = generatePlanet("2k_jupiter.jpg",null,1800,0,1800,330)
+
+	planetSaturn = generatePlanet("2k_saturn.jpg",null,2200,0,2200,230)
+	planetUranus = generatePlanet("2k_uranus.jpg",null,2470,0,2470,200)
+	planetNeptune = generatePlanet("2k_neptune.jpg",null,2670,0,6470,176)
 
 	// var loader = new THREE.GLTFLoader();
 	// loader.load( 'sun/sun.gltf', function ( gltf ) {           //   <<--------- Model Path
@@ -358,6 +360,8 @@ function render()
 	rotateObject(planetVenus,0.007)
 	rotateObject(planetEarth,0.004)
 	rotateObject(planetMars,0.01)
+	rotateObject(planetJupiter,0.001)
+
 	rotateObject(planetSaturn,0.003)
 	rotateObject(planetUranus,0.005)
 	rotateObject(planetNeptune,0.0009)
@@ -372,12 +376,12 @@ function render()
 			// planets[i].rotation.y +=0.003;
 			continue
 		}
-		planets[i].rotation.y +=0.1;
+		planets[i].rotation.y +=0.05;
 	}
 	//plantes[4] =moon
-	moonPivot.rotation+=0.1
+	// moonPivot.rotation+=0.1
 	planets[1].rotation.y -=1.4;
-	planets[2].rotation.y +=0.1;
+	planets[3].rotation.y +=0.1;
 	planets[6].rotation.y -=0.6;
 	planets[5].rotation.y +=0.3;
 
