@@ -78,7 +78,7 @@ function init()
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	scene.add(camera);
 	// camera.position.set(0,150,400);
-	camera.position.set(3000,3000,500);
+	camera.position.set(4000,4000,1000);
 	camera.layers.enable(2)
 	// camera.layers.set(2)
 
@@ -162,13 +162,16 @@ function init()
 	planetVenus = generatePlanet("2k_venus_surface.jpg","2k_venus_atmosphere.jpg",1000,0,1000,94)
 
 	planetEarth = generatePlanet("2k_earth_daymap.jpg","2k-earth_normal_map.tif",-1200,0,-1200,100)
-	planetMoon = generatePlanet("2k_moon.jpg","null",100,0,700)
+	planetEarth.name="earth"
+
+	planetMoon = generateMoon("2k_moon.jpg","null")
+
 
 	moonPivot = new THREE.Object3D();
 	moonPivot.position = planetEarth.position;
 	planetEarth.add( moonPivot );
+
 	moonPivot.add(planetMoon)
-	planetMoon.name="moon"
 	// planetMoon.position = planetEarth.position
 
 
@@ -176,22 +179,8 @@ function init()
 	planetJupiter = generatePlanet("2k_jupiter.jpg",null,1800,0,1800,330)
 
 	planetSaturn = generatePlanet("2k_saturn.jpg",null,2200,0,2200,230)
-	planetUranus = generatePlanet("2k_uranus.jpg",null,2470,0,2470,200)
+	planetUranus = generatePlanet("2k_uranus.jpg",null,-2470,0,-2470,200)
 	planetNeptune = generatePlanet("2k_neptune.jpg",null,2670,0,6470,176)
-
-	// var loader = new THREE.GLTFLoader();
-	// loader.load( 'sun/sun.gltf', function ( gltf ) {           //   <<--------- Model Path
-	// 	planetSun = gltf.scene;
-	// 	planetSun.layers.set(2)
-	// 	gltf.scene.scale.set( 1700, 1700, 1700 );
-	// 	gltf.scene.position.x = 0;				    //Position (x = right+ left-)
-	// 	gltf.scene.position.y = 0;				    //Position (y = up+, down-)
-	// 	gltf.scene.position.z = 0;				    //Position (z = front +, back-)
-	// 	//gltf.animations;
-	// 	scene.add( gltf.scene );
-	// });
-
-
 
 
 	// mirrorCube = generateMirrorCube()
@@ -209,6 +198,22 @@ function init()
 
 
 
+}
+
+
+
+function generateMoon(texture, normal,size=75){
+	var sphereGeom =new THREE.SphereGeometry(size, 20,20)
+	var sphere = createBumpMesh(sphereGeom, texture,normal);
+
+
+	sphere.position.set(160,0,160); //distance earth moon
+	sphere.castShadow=true
+	sphere.receiveShadow =true
+	scene.add(sphere);
+
+	// planets.push(sphere)
+	return sphere
 }
 
 function generateSun(texture, normal,x,y,z,size=75){
@@ -366,24 +371,32 @@ function render()
 	rotateObject(planetUranus,0.005)
 	rotateObject(planetNeptune,0.0009)
 	// planets[i].name
-	for(var i=0;i< planets.length;i++){
-		if((planets[i].name.localeCompare("sun"))==0){
-
-			planets[i].rotation.y +=0.01;
-			continue
-		}else if((planets[i].name.localeCompare("moon"))==0){
-
-			// planets[i].rotation.y +=0.003;
-			continue
-		}
-		planets[i].rotation.y +=0.05;
-	}
+	// for(var i=0;i< planets.length;i++){
+	// 	if((planets[i].name.localeCompare("sun"))==0){
+	//
+	// 		planets[i].rotation.y +=0.01;
+	// 		continue
+	// 	}else if((planets[i].name.localeCompare("earth"))==0){
+	//
+	// 		planets[i].rotation.y +=0.03;
+	// 		continue
+	// 	}
+	// 	planets[i].rotation.y +=0.05;
+	// }
 	//plantes[4] =moon
 	// moonPivot.rotation+=0.1
-	planets[1].rotation.y -=1.4;
-	planets[3].rotation.y +=0.1;
-	planets[6].rotation.y -=0.6;
-	planets[5].rotation.y +=0.3;
+	planetMoon.rotation.y+=0.1
+	planetEarth.rotation.y+=0.05;  //by changing this value you change also speed of moon around earth
+	planetSun.rotation.y+=0.01
+
+	planetMercury.rotation.y -=1.4;
+	planetVenus.rotation.y+=0.6
+	planetMars.rotation.y +=0.1;
+	planetJupiter.rotation.y -=0.6;
+	planetSaturn.rotation.y +=0.3;
+	planetUranus.rotation.y+=0.5
+	planetNeptune.rotation.y -=0.2;
+
 
 
 
