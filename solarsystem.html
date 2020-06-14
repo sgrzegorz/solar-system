@@ -152,10 +152,11 @@ function init()
 	scene.add( axes );
 	///////////////////////////////////CUSTOM//////////////////////////////////////////
 
-	planetSun = generatePlanet("2k_sun.jpg",null,0,0,0,700)
+	planetSun = generateSun("2k_sun.jpg",null,0,0,0,450)
 	planetSun.opacity =50
 	planetSun.transparent = true
 	planetSun.layers.set(2)
+	planetSun.name="sun"
 
 	planetMercury = generatePlanet("2k_mercury.jpg",null,800,0,800,38)
 	planetVenus = generatePlanet("2k_venus_surface.jpg","2k_venus_atmosphere.jpg",1000,0,1000,94)
@@ -201,6 +202,16 @@ function init()
 
 }
 
+function generateSun(texture, normal,x,y,z,size=75){
+	var sphereGeom =new THREE.SphereGeometry(size, 20,20)
+	var sphere = createBumpMesh(sphereGeom, texture,normal);
+// var sphere = createBumpMesh(new THREE.CubeGeometry(size, size, size,1,1,1), "stone.jpg","brick-wall.jpg");
+	sphere.position.set(x,y,z);
+	sphere.rotation.x=Math.PI/2  +Math.PI*0.2;
+	scene.add(sphere);
+	planets.push(sphere)
+	return sphere
+}
 
 
 function generatePlanet(texture, normal,x,y,z,size=75){
@@ -209,7 +220,9 @@ function generatePlanet(texture, normal,x,y,z,size=75){
 // var sphere = createBumpMesh(new THREE.CubeGeometry(size, size, size,1,1,1), "stone.jpg","brick-wall.jpg");
 	sphere.position.set(x,y,z);
 	sphere.rotation.x=Math.PI/2  +Math.PI*0.2;
+	sphere.castShadow=true
 	scene.add(sphere);
+
 	planets.push(sphere)
 	return sphere
 }
@@ -340,14 +353,18 @@ function render()
 	rotateObject(planetSaturn,0.003)
 	rotateObject(planetUranus,0.005)
 	rotateObject(planetNeptune,0.0009)
-
+	// planets[i].name
 	for(var i=0;i< planets.length;i++){
-		planets[i].rotation.y +=0.1;
+		if((planets[i].name.localeCompare("sun"))==0){
 
+			planets[i].rotation.y +=0.01;
+			continue
+		}
+		planets[i].rotation.y +=0.1;
 	}
-	sun
-	planets[0].rotation.y +=0.1;
+
 	planets[1].rotation.y -=1.4;
+	planets[2].rotation.y +=0.1;
 	planets[6].rotation.y -=0.6;
 	planets[5].rotation.y +=0.3;
 
