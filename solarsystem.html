@@ -26,11 +26,7 @@
 <link rel=stylesheet href="info.css"/>
 <script src="info.js"></script>
 <script src="GLTFLoader.js"></script>
-<div id="infoButton"></div>
-<div id="infoBox" title="Demo Information">
-This three.js demo is part of a collection at
-<a href="http://stemkoski.github.io/Three.js/">http://stemkoski.github.io/Three.js/</a>
-</div>
+
 <!-- ------------------------------------------------------------ -->
 
 <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
@@ -112,32 +108,15 @@ function init()
 	ambientLight.layers.set(2);
 	scene.add( ambientLight );
 
-	// var light = new THREE.PointLight(0xffffff);
-	// light.position.set(0,2700,0);
-	// light.layers.set(2);
-	// scene.add(light);
-	//
-	// var light = new THREE.PointLight(0xffffff);
-	// light.position.set(0,-2700,0);
-	// light.layers.set(2);
-	// scene.add(light);
 
-	// var light = new THREE.PointLight(0xffffff);
-	// light.position.set(0,0,0);
-	// scene.add(light);
-	//
-	// var light = new THREE.PointLight(0xffffff);
-	// light.position.set(0,0,0);
-	// scene.add(light);
-	// FLOOR
 
 	
 	// SKYBOX/FOG
 	var materialArray = [];
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
-	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
 	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars_milky_way.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
+	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
 	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
 	materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'textures/2k_stars.jpg' ) }));
 	for (var i = 0; i < 6; i++)
@@ -182,22 +161,6 @@ function init()
 	planetUranus = generatePlanet("2k_uranus.jpg",null,-2470,0,-2470,200)
 	planetNeptune = generatePlanet("2k_neptune.jpg",null,2670,0,6470,176)
 
-
-	// mirrorCube = generateMirrorCube()
-	// mirrorSphere = generateMirrorSphere(50,75,50,0)
-
-	// var radius = 400
-	// var a = Math.floor(0.5 *radius)
-	// var b = Math.floor(0.5*radius*Math.sqrt(3))
-	// orbitingSpheres[0] = generateMirrorSphere(50,0,50,radius)
-	// orbitingSpheres[1] = generateMirrorSphere(50,b,50,-a)
-	// orbitingSpheres[2] = generateMirrorSphere(50,-b,50,-a)
-
-	// "2k_earth_daymap.jpg","2k-earth_normal_map.tif"
-
-
-
-
 }
 
 
@@ -212,14 +175,12 @@ function generateMoon(texture, normal,size=75){
 	sphere.receiveShadow =true
 	scene.add(sphere);
 
-	// planets.push(sphere)
 	return sphere
 }
 
 function generateSun(texture, normal,x,y,z,size=75){
 	var sphereGeom =new THREE.SphereGeometry(size, 20,20)
 	var sphere = createBumpMesh(sphereGeom, texture,normal);
-// var sphere = createBumpMesh(new THREE.CubeGeometry(size, size, size,1,1,1), "stone.jpg","brick-wall.jpg");
 	sphere.position.set(x,y,z);
 	sphere.rotation.x=Math.PI/2  +Math.PI*0.2;
 	scene.add(sphere);
@@ -231,7 +192,6 @@ function generateSun(texture, normal,x,y,z,size=75){
 function generatePlanet(texture, normal,x,y,z,size=75){
 	var sphereGeom =new THREE.SphereGeometry(size, 20,20)
 	var sphere = createBumpMesh(sphereGeom, texture,normal);
-// var sphere = createBumpMesh(new THREE.CubeGeometry(size, size, size,1,1,1), "stone.jpg","brick-wall.jpg");
 	sphere.position.set(x,y,z);
 	sphere.rotation.x=Math.PI/2  +Math.PI*0.2;
 	sphere.castShadow=true
@@ -257,19 +217,18 @@ function generateMirrorSphere(radius,x,y,z) {
 
 }
 
-function generateMirrorCube() {
-	var cubeGeom = new THREE.CubeGeometry(200, 200, 30,1,1,1);
-	var mirrorCubeCamera = new THREE.CubeCamera( 0.1, 5000, 512 );
-	scene.add( mirrorCubeCamera );
-	var mirrorCubeMaterial = new THREE.MeshBasicMaterial( { envMap: mirrorCubeCamera.renderTarget } );
-	var mirrorCube = new THREE.Mesh( cubeGeom, mirrorCubeMaterial );
-	mirrorCube.position.set(-75,50,0);
-//mirrorCubeCamera.position = mirrorCube.position;    not working with new three.js
-	mirrorCubeCamera.position.set(-75,50,0);
-	scene.add(mirrorCube);
-	return new MirrorShape(mirrorCube,mirrorCubeCamera)
-
-}
+// function generateMirrorCube() {
+// 	var cubeGeom = new THREE.CubeGeometry(200, 200, 30,1,1,1);
+// 	var mirrorCubeCamera = new THREE.CubeCamera( 0.1, 5000, 512 );
+// 	scene.add( mirrorCubeCamera );
+// 	var mirrorCubeMaterial = new THREE.MeshBasicMaterial( { envMap: mirrorCubeCamera.renderTarget } );
+// 	var mirrorCube = new THREE.Mesh( cubeGeom, mirrorCubeMaterial );
+// 	mirrorCube.position.set(-75,50,0);
+// 	mirrorCubeCamera.position.set(-75,50,0);
+// 	scene.add(mirrorCube);
+// 	return new MirrorShape(mirrorCube,mirrorCubeCamera)
+//
+// }
 
 
 function rotateObject(object,rotSpeed =0.01) {
@@ -286,15 +245,15 @@ function rotateObject(object,rotSpeed =0.01) {
 
 
 
-function createNormalMesh(geom, imageFile, normal) {
-	var t = THREE.ImageUtils.loadTexture("textures/" + imageFile);
-	var m = THREE.ImageUtils.loadTexture("textures/" + normal);
-	var mat2 = new THREE.MeshPhongMaterial({
-		map: t, normalMap: m
-	});
-	var mesh = new THREE.Mesh(geom, mat2);
-	return mesh;
-}
+// function createNormalMesh(geom, imageFile, normal) {
+// 	var t = THREE.ImageUtils.loadTexture("textures/" + imageFile);
+// 	var m = THREE.ImageUtils.loadTexture("textures/" + normal);
+// 	var mat2 = new THREE.MeshPhongMaterial({
+// 		map: t, normalMap: m
+// 	});
+// 	var mesh = new THREE.Mesh(geom, mat2);
+// 	return mesh;
+// }
 
 function createBumpMesh(geom, imageFile, bump) {
 	var texture = THREE.ImageUtils.loadTexture("textures/" + imageFile)
@@ -314,18 +273,18 @@ function createBumpMesh(geom, imageFile, bump) {
 	return mesh;
 }
 
-function makeMirrorEffect(object){
-	// move the CubeCamera to the position of the object
-	//    that has a reflective surface, "take a picture" in each direction
-	//    and apply it to the surface.
-	// need to hide surface before and after so that it does not
-	//    "get in the way" of the camera
-	var shape =object.shape
-	var camera = object.camera
-	shape.visible = false;
-	camera.updateCubeMap( renderer, scene );
-	shape.visible = true;
-}
+// function makeMirrorEffect(object){
+// 	// move the CubeCamera to the position of the object
+// 	//    that has a reflective surface, "take a picture" in each direction
+// 	//    and apply it to the surface.
+// 	// need to hide surface before and after so that it does not
+// 	//    "get in the way" of the camera
+// 	var shape =object.shape
+// 	var camera = object.camera
+// 	shape.visible = false;
+// 	camera.updateCubeMap( renderer, scene );
+// 	shape.visible = true;
+// }
 
 function animate() 
 {
@@ -396,9 +355,6 @@ function render()
 	planetSaturn.rotation.y +=0.3;
 	planetUranus.rotation.y+=0.5
 	planetNeptune.rotation.y -=0.2;
-
-
-
 
 
 	// rotateObject(planetMars)
