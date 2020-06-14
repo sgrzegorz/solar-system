@@ -25,6 +25,7 @@
 <link rel=stylesheet href="jquery-ui.css" />
 <link rel=stylesheet href="info.css"/>
 <script src="info.js"></script>
+<script src="GLTFLoader.js"></script>
 <div id="infoButton"></div>
 <div id="infoBox" title="Demo Information">
 This three.js demo is part of a collection at
@@ -78,6 +79,8 @@ function init()
 	scene.add(camera);
 	// camera.position.set(0,150,400);
 	camera.position.set(3000,3000,500);
+	camera.layers.enable(2)
+	// camera.layers.set(2)
 
 	camera.lookAt(scene.position);	
 	// RENDERER
@@ -102,7 +105,30 @@ function init()
 	// LIGHT
 	var light = new THREE.PointLight(0xffffff);
 	light.position.set(0,0,0);
+	// light.layers.set(1)
 	scene.add(light);
+
+	var ambientLight = new THREE.AmbientLight( 0xffffff);
+	ambientLight.layers.set(2);
+	scene.add( ambientLight );
+
+	// var light = new THREE.PointLight(0xffffff);
+	// light.position.set(0,2700,0);
+	// light.layers.set(2);
+	// scene.add(light);
+	//
+	// var light = new THREE.PointLight(0xffffff);
+	// light.position.set(0,-2700,0);
+	// light.layers.set(2);
+	// scene.add(light);
+
+	// var light = new THREE.PointLight(0xffffff);
+	// light.position.set(0,0,0);
+	// scene.add(light);
+	//
+	// var light = new THREE.PointLight(0xffffff);
+	// light.position.set(0,0,0);
+	// scene.add(light);
 	// FLOOR
 
 	
@@ -129,6 +155,7 @@ function init()
 	planetSun = generatePlanet("2k_sun.jpg",null,0,0,0,700)
 	planetSun.opacity =50
 	planetSun.transparent = true
+	planetSun.layers.set(2)
 
 	planetMercury = generatePlanet("2k_mercury.jpg",null,800,0,800,38)
 	planetVenus = generatePlanet("2k_venus_surface.jpg","2k_venus_atmosphere.jpg",1000,0,1000,94)
@@ -142,11 +169,23 @@ function init()
 	planetUranus = generatePlanet("2k_uranus.jpg",null,2200,0,2200,200)
 	planetNeptune = generatePlanet("2k_neptune.jpg",null,2470,0,2470,176)
 
+	// var loader = new THREE.GLTFLoader();
+	// loader.load( 'sun/sun.gltf', function ( gltf ) {           //   <<--------- Model Path
+	// 	planetSun = gltf.scene;
+	// 	planetSun.layers.set(2)
+	// 	gltf.scene.scale.set( 1700, 1700, 1700 );
+	// 	gltf.scene.position.x = 0;				    //Position (x = right+ left-)
+	// 	gltf.scene.position.y = 0;				    //Position (y = up+, down-)
+	// 	gltf.scene.position.z = 0;				    //Position (z = front +, back-)
+	// 	//gltf.animations;
+	// 	scene.add( gltf.scene );
+	// });
 
 
 
-	mirrorCube = generateMirrorCube()
-	mirrorSphere = generateMirrorSphere(50,75,50,0)
+
+	// mirrorCube = generateMirrorCube()
+	// mirrorSphere = generateMirrorSphere(50,75,50,0)
 
 	// var radius = 400
 	// var a = Math.floor(0.5 *radius)
@@ -262,24 +301,38 @@ function makeMirrorEffect(object){
 
 function animate() 
 {
-    requestAnimationFrame( animate );
-	render();		
-	update();
+	requestAnimationFrame( animate );
+
+	controls.update();
+	renderer.autoClear = true;
+	camera.layers.set(0); // << == switch camera between layers
+	renderer.render(scene, camera);
+
+	renderer.autoClear = false; // don't remove previous layer results
+
+	camera.layers.set(2); // << == switch camera between layers
+	renderer.render(scene, camera);
+
+
+
+	render();
+	// update();
 }
 
-function update()
-{
-	if ( keyboard.pressed("z") )
-	{
-		// do something
-	}
-	
-	controls.update();
-	stats.update();
-}
+// function update()
+// {
+// 	if ( keyboard.pressed("z") )
+// 	{
+// 		// do something
+// 	}
+//
+// 	controls.update();
+// 	stats.update();
+// }
 
 function render()
 {
+	// animateStars();
 	rotateObject(planetMercury,0.006)
 	rotateObject(planetVenus,0.007)
 	rotateObject(planetEarth,0.004)
@@ -292,6 +345,7 @@ function render()
 		planets[i].rotation.y +=0.1;
 
 	}
+	sun
 	planets[0].rotation.y +=0.1;
 	planets[1].rotation.y -=1.4;
 	planets[6].rotation.y -=0.6;
@@ -302,8 +356,8 @@ function render()
 
 	// rotateObject(planetMars)
 
-	makeMirrorEffect(mirrorCube)
-	makeMirrorEffect(mirrorSphere)
+	// makeMirrorEffect(mirrorCube)
+	// makeMirrorEffect(mirrorSphere)
 
 	// rotateObject(mirrorSphere)
 	//
@@ -316,7 +370,7 @@ function render()
 
 
 
-	renderer.render( scene, camera );
+	// renderer.render( scene, camera );
 }
 
 </script>
