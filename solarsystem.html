@@ -57,7 +57,7 @@ var mirrorSphere
 var box
 var orbitingSpheres =[]
 var planets = []
-
+var moonPivot
 
 init();
 animate();
@@ -161,13 +161,20 @@ function init()
 	planetMercury = generatePlanet("2k_mercury.jpg",null,800,0,800,38)
 	planetVenus = generatePlanet("2k_venus_surface.jpg","2k_venus_atmosphere.jpg",1000,0,1000,94)
 
-	planetEarth = generatePlanet("2k_earth_daymap.jpg","2k-earth_normal_map.tif",1200,0,1200,100)
+	planetEarth = generatePlanet("2k_earth_daymap.jpg","2k-earth_normal_map.tif",-1200,0,-1200,100)
 	planetMoon = generatePlanet("2k_moon.jpg","null",100,0,700)
 
+	moonPivot = new THREE.Object3D();
+	moonPivot.position = planetEarth.position;
+	planetEarth.add( moonPivot );
+	moonPivot.add(planetMoon)
+	planetMoon.name="moon"
+	// planetMoon.position = planetEarth.position
 
-	planetMars = generatePlanet("2k_mars.jpg","null",1350,0,1350,53)
+
+	planetMars = generatePlanet("2k_mars.jpg","null",-1350,0,-1350,53)
 	planetSaturn = generatePlanet("2k_saturn.jpg",null,1800,0,1800,330)
-	planetUranus = generatePlanet("2k_uranus.jpg",null,2200,0,2200,200)
+	planetUranus = generatePlanet("2k_uranus.jpg",null,-2200,0,-2200,200)
 	planetNeptune = generatePlanet("2k_neptune.jpg",null,2470,0,2470,176)
 
 	// var loader = new THREE.GLTFLoader();
@@ -221,6 +228,7 @@ function generatePlanet(texture, normal,x,y,z,size=75){
 	sphere.position.set(x,y,z);
 	sphere.rotation.x=Math.PI/2  +Math.PI*0.2;
 	sphere.castShadow=true
+	sphere.receiveShadow =true
 	scene.add(sphere);
 
 	planets.push(sphere)
@@ -359,10 +367,15 @@ function render()
 
 			planets[i].rotation.y +=0.01;
 			continue
+		}else if((planets[i].name.localeCompare("moon"))==0){
+
+			// planets[i].rotation.y +=0.003;
+			continue
 		}
 		planets[i].rotation.y +=0.1;
 	}
-
+	//plantes[4] =moon
+	moonPivot.rotation+=0.1
 	planets[1].rotation.y -=1.4;
 	planets[2].rotation.y +=0.1;
 	planets[6].rotation.y -=0.6;
